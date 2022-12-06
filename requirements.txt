@@ -1,0 +1,5 @@
+revChatGPT
+flask
+peewee
+psycopg2
+python-dotenv
