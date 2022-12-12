@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <!-- Post preview-->
+            <div class="post-preview">
+                <a href="{{ entry.id|string + '-'+ entry.slug }}">
+                    <h2 class="post-title">{{ entry.title|safe }}</h2>
+                </a>
+                <p class="post-meta">
+                    Posted by
+                    <a href="#!">Bot</a>
+                    on {{ entry.created.strftime("%B %-d, %Y")}}
+                </p>
+                <div class="box border rounded border-bottom border-primary">
+                    <h3 class="legend">Question</h3>
+                    <div class="content">
+                    {{ entry.question_body|safe }}
+                    </div>
+                </div>
+                {% if entry.answer %}
+                <div class="box mt-5 border rounded border-bottom border-primary">
+                    <h3 class="legend">Answer</h3>
+                    <div class="content">
+                        {{ entry.answer|safe }}
+                    </div>
+                </div>
+                {% else %}
+                <div class="box mt-4 border rounded border-bottom border-primary">
+                    <h3 class="legend">Answer</h3>
+                    <div class="content">
+                        <p>Answer is still being generated. Please come back later.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

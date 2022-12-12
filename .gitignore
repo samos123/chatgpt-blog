@@ -3,3 +3,4 @@ test.db
 .venv
 .idea
 __pycache__
+chatgpt-blog.iml

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            {% for entry in entries %}
+            <!-- Post preview-->
+            <div class="post-preview">
+                <a href="{{ entry.id|string + '-'+ entry.slug }}">
+                    <h2 class="post-title">{{ entry.title|safe }}</h2>
+                </a>
+                <p class="post-meta">
+                    Posted by
+                    <a href="#!">Bot</a>
+                    on {{ entry.created.strftime("%B %-d, %Y")}}
+                </p>
+            </div>
+            {% if not loop.last %}
+            <!-- Divider-->
+            <hr class="my-4" />
+            {% endif %}
+            {% endfor %}
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
