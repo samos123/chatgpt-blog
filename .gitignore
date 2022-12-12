@@ -4,3 +4,4 @@ test.db
 .idea
 __pycache__
 chatgpt-blog.iml
+chatgpt.json
