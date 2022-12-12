@@ -30,6 +30,9 @@ class Entry(Model):
     question_body = TextField()
     created = DateTimeField(default=datetime.datetime.now)
 
+    def question_url(self):
+        return f"https://stackoverflow.com/q/{self.question_id}"
+
     def generate_answer(self, chatbot):
         if not self.id:
             raise Exception("Can only generate answer on existing records")

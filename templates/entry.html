@@ -17,7 +17,15 @@
                 <div class="box border rounded border-bottom border-primary">
                     <h3 class="legend">Question</h3>
                     <div class="content">
-                    {{ entry.question_body|safe }}
+                        <div class="source">
+                            Source:
+                            <a href="{{ entry.question_url() }}" target="_blank" rel="noopener noreferrer">
+                                <img src="https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-icon.svg?v=6e4af45f4d66" height="25" />
+                                {{ entry.question_url() }}
+                            </a>
+                        </div>
+                        {{ entry.question_body|safe }}
+                        licensed under <a href="https://creativecommons.org/licenses/by-nd/2.0/" target="_blank" rel="noopener noreferrer">CC BY-ND 2.0</a>
                     </div>
                 </div>
                 {% if entry.answer %}
