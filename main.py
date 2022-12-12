@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 import markdown
 
-from models import Entry, load_test_data
+from models import Entry
 
 
 app = Flask(__name__)

@@ -17,13 +17,18 @@
                 <div class="box border rounded border-bottom border-primary">
                     <h3 class="legend">Question</h3>
                     <div class="content">
-                        <div class="source">
+                        <p class="post-meta source">
                             Source:
                             <a href="{{ entry.question_url() }}" target="_blank" rel="noopener noreferrer">
                                 <img src="https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-icon.svg?v=6e4af45f4d66" height="25" />
                                 {{ entry.question_url() }}
                             </a>
-                        </div>
+                            {% if entry.question_date %}
+                            <br/>
+                            Asked on
+                            on {{ entry.question_date.strftime("%B %-d, %Y")}}
+                            {% endif %}
+                        </p>
                         {{ entry.question_body|safe }}
                         licensed under <a href="https://creativecommons.org/licenses/by-nd/2.0/" target="_blank" rel="noopener noreferrer">CC BY-ND 2.0</a>
                     </div>
