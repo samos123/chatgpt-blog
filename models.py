@@ -2,7 +2,6 @@ import datetime
 import os
 import sys
 
-from dotenv import load_dotenv
 from peewee import *
 from playhouse.db_url import connect
 import requests
@@ -10,8 +9,6 @@ from slugify import slugify
 from revChatGPT.revChatGPT import Chatbot
 
 from utils import load_json_file
-
-load_dotenv()
 
 # Connect to the database URL defined in the environment, falling
 # back to a local Sqlite database if no database URL is specified.
@@ -60,7 +57,7 @@ def load_so_data(fromdate: datetime.datetime, todate: datetime.datetime):
 if __name__ == "__main__":
     if sys.argv[1] == "create_tables":
         db.connect()
-        db.create_tables([Entry])
+        db.create_tables([Entry], safe=True)
     if sys.argv[1] == "load_test_data":
         fromdate = datetime.datetime.strptime(sys.argv[2], "%Y-%m-%d")
         todate = datetime.datetime.strptime(sys.argv[3], "%Y-%m-%d")
