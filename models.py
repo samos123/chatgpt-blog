@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 import sys
 
@@ -70,3 +71,12 @@ if __name__ == "__main__":
         entry_id = int(sys.argv[2])
         entry = Entry.get_by_id(entry_id)
         entry.generate_answer(chatbot)
+    if sys.argv[1] == "generate_answers":
+        chatbot = Chatbot(load_json_file("chatgpt.json"), conversation_id=None)
+        entries = Entry.select().where(Entry.answer.is_null())
+        for entry in entries:
+            print(f"Generating answer for: {entry.id} - {entry.title}")
+            try:
+                entry.generate_answer(chatbot)
+            except:
+                logging.exception("error")
