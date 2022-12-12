@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    entries = Entry.select().order_by(Entry.created.desc()).limit(10)
+    entries = Entry.select(Entry.id, Entry.slug, Entry.title, Entry.created).order_by(Entry.created.desc()).limit(20)
     return render_template("index.html", entries=entries)
 
 
