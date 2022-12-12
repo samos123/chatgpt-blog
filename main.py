@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import markdown
 
 from models import Entry, load_test_data
 
@@ -14,8 +15,10 @@ def index():
 
 @app.route("/<int:post_id>-<string:path>")
 def entry(post_id, path):
-    entry = Entry.get_by_id(post_id)
-    return render_template("entry.html", entry=entry)
+    e = Entry.get_by_id(post_id)
+    if e.answer:
+        e.answer = markdown.markdown(e.answer)
+    return render_template("entry.html", entry=e)
 
 
 if __name__ == "__main__":

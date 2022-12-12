@@ -7,6 +7,9 @@ from peewee import *
 from playhouse.db_url import connect
 import requests
 from slugify import slugify
+from revChatGPT.revChatGPT import Chatbot
+
+from utils import load_json_file
 
 load_dotenv()
 
@@ -27,6 +30,13 @@ class Entry(Model):
     question_body = TextField()
     created = DateTimeField(default=datetime.datetime.now)
 
+    def generate_answer(self, chatbot):
+        if not self.id:
+            raise Exception("Can only generate answer on existing records")
+        response = chatbot.get_chat_response(self.prompt)
+        self.answer = response.get("message")
+        self.save()
+
 
 def load_test_data():
     Entry.delete()
@@ -34,7 +44,7 @@ def load_test_data():
                              "order=desc&max=1670716800&sort=activity&tagged=golang&site=stackoverflow"
                              "&filter=!nOedRLbBQj").json()
     for item in questions["items"]:
-        prompt = item["title"] + "<br/>" + item["body"]
+        prompt = item["title"] + "<br/>" + item["body"] + " ".join(item["tags"])
         Entry.get_or_create(slug=slugify(item["title"]), prompt=prompt,
                             question_id=item["question_id"], question_body=item["body"], title=item["title"])
 
@@ -47,3 +57,9 @@ if __name__ == "__main__":
         load_test_data()
     if sys.argv[1] == "delete_all_data":
         Entry.delete()
+    if sys.argv[1] == "generate_answer":
+        chatbot = Chatbot(load_json_file("chatgpt.json"), conversation_id=None)
+        entry_id = int(sys.argv[2])
+        entry = Entry.get_by_id(entry_id)
+        entry.generate_answer(chatbot)
+
