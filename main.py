@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+import math
+
+from flask import Flask, render_template, request
 import markdown
 
 from models import Entry
@@ -9,9 +11,11 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    num_pages = math.ceil(Entry.select().count() / 20)
+    page = int(request.args.get("page", 1))
     entries = Entry.select(Entry.id, Entry.slug, Entry.title, Entry.created)\
-        .where(Entry.answer.is_null(False)).order_by(Entry.created.desc()).limit(20)
-    return render_template("index.html", entries=entries)
+        .where(Entry.answer.is_null(False)).order_by(Entry.created.desc()).paginate(page, 20)
+    return render_template("index.html", entries=entries, num_pages=num_pages, current_page=page)
 
 
 @app.route("/<int:post_id>-<string:path>")
