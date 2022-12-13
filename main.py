@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    num_pages = math.ceil(Entry.select().count() / 20)
+    num_pages = math.ceil(Entry.select().where(Entry.answer.is_null(False)).count() / 20)
     page = int(request.args.get("page", 1))
     entries = Entry.select(Entry.id, Entry.slug, Entry.title, Entry.created)\
         .where(Entry.answer.is_null(False)).order_by(Entry.created.desc()).paginate(page, 20)
@@ -22,7 +22,7 @@ def index():
 def entry(post_id, path):
     e = Entry.get_by_id(post_id)
     if e.answer:
-        e.answer = markdown.markdown(e.answer)
+        e.answer = markdown.markdown(e.answer, extensions=['fenced_code'])
     return render_template("entry.html", entry=e)
 
 
