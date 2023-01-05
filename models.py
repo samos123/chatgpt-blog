@@ -7,7 +7,7 @@ from peewee import *
 from playhouse.db_url import connect
 import requests
 from slugify import slugify
-from revChatGPT.revChatGPT import Chatbot
+from revChatGPT.ChatGPT import Chatbot
 
 from utils import load_json_file
 
@@ -35,7 +35,7 @@ class Entry(Model):
     def generate_answer(self, chatbot):
         if not self.id:
             raise Exception("Can only generate answer on existing records")
-        response = chatbot.get_chat_response(self.prompt)
+        response = chatbot.ask(self.prompt)
         self.answer = response.get("message")
         self.save()
 
@@ -75,8 +75,9 @@ if __name__ == "__main__":
         chatbot = Chatbot(load_json_file("chatgpt.json"), conversation_id=None)
         entries = Entry.select().where(Entry.answer.is_null())
         for entry in entries:
-            print(f"Generating answer for: {entry.id} - {entry.title}")
             try:
+                print(f"Generating answer for: {entry.id} - {entry.title}")
+                print(entry.id)
                 entry.generate_answer(chatbot)
             except:
-                logging.exception("error")
+                logging.exception("error while generating answer")
