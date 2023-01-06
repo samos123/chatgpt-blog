@@ -1,4 +1,4 @@
-revChatGPT
+revChatGPT==0.0.48.3
 flask
 peewee
 psycopg2
