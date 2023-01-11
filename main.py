@@ -23,7 +23,7 @@ def entry(post_id, path):
     e = Entry.get_by_id(post_id)
     if e.answer:
         e.answer = markdown.markdown(e.answer, extensions=['fenced_code'])
-    return render_template("entry.html", entry=e)
+    return render_template("entry.html", entry=e, title=e.title)
 
 
 @app.route("/sitemap.xml")
