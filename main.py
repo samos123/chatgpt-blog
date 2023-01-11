@@ -1,6 +1,6 @@
 import math
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 import markdown
 
 from models import Entry
@@ -24,6 +24,14 @@ def entry(post_id, path):
     if e.answer:
         e.answer = markdown.markdown(e.answer, extensions=['fenced_code'])
     return render_template("entry.html", entry=e)
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    pages = Entry.select(Entry.slug, Entry.created).where(Entry.answer.is_null(False))
+    resp = make_response(render_template("sitemap.xml", pages=pages))
+    resp.headers['Content-Type'] = 'application/xml'
+    return resp
 
 
 if __name__ == "__main__":
