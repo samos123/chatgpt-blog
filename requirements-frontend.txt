@@ -1,0 +1,8 @@
+flask
+peewee
+psycopg2
+python-dotenv
+requests
+python-slugify
+markdown
+gunicorn==20.1.0

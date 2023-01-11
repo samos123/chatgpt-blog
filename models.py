@@ -7,7 +7,6 @@ from peewee import *
 from playhouse.db_url import connect
 import requests
 from slugify import slugify
-from revChatGPT.ChatGPT import Chatbot
 
 from utils import load_json_file
 
@@ -67,11 +66,13 @@ if __name__ == "__main__":
     if sys.argv[1] == "delete_all_data":
         Entry.delete()
     if sys.argv[1] == "generate_answer":
+        from revChatGPT.ChatGPT import Chatbot
         chatbot = Chatbot(load_json_file("chatgpt.json"), conversation_id=None)
         entry_id = int(sys.argv[2])
         entry = Entry.get_by_id(entry_id)
         entry.generate_answer(chatbot)
     if sys.argv[1] == "generate_answers":
+        from revChatGPT.ChatGPT import Chatbot
         chatbot = Chatbot(load_json_file("chatgpt.json"), conversation_id=None)
         entries = Entry.select().where(Entry.answer.is_null())
         for entry in entries:

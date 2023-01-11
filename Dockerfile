@@ -9,11 +9,11 @@ ENV PYTHONUNBUFFERED True
 # Copy local code to the container image.
 ENV APP_HOME /app
 WORKDIR $APP_HOME
-COPY requirements.txt ./
+COPY requirements-frontend.txt ./
 
 RUN apt update && apt install -y libpq-dev gcc \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir -r requirements-frontend.txt \
     && apt autoremove -y gcc
 
 COPY main.py models.py utils.py ./
