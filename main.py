@@ -3,7 +3,7 @@ import math
 from flask import Flask, render_template, request, make_response
 import markdown
 
-from models import Entry
+from models import Entry, db
 
 
 app = Flask(__name__)
@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    db.connect(True)
     num_pages = math.ceil(Entry.select().where(Entry.answer.is_null(False)).count() / 20)
     page = int(request.args.get("page", 1))
     entries = Entry.select(Entry.id, Entry.slug, Entry.title, Entry.created)\
@@ -20,6 +21,7 @@ def index():
 
 @app.route("/<int:post_id>-<string:path>")
 def entry(post_id, path):
+    db.connect(True)
     e = Entry.get_by_id(post_id)
     if e.answer:
         e.answer = markdown.markdown(e.answer, extensions=['fenced_code'])
